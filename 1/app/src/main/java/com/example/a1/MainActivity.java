@@ -8,15 +8,28 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
+import android.content.Intent;
 
 
 public class MainActivity extends AppCompatActivity {
 
+
+    public void openNewActivity(int gradesNumber){
+        Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra("ileOcen", gradesNumber);
+        startActivity(intent);
+    }
     public void changeButton(){
         EditText name = (EditText) findViewById(R.id.editTextTextPersonName);
         EditText lastname = (EditText) findViewById(R.id.editTextTextPersonName2);
         EditText grades = (EditText) findViewById(R.id.editTextNumber);
         Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNewActivity(Integer.parseInt(grades.getText().toString()));
+            }
+        });
         if (name.getText().toString().isEmpty() || lastname.getText().toString().isEmpty() || grades.getText().toString().isEmpty()) {
             button.setVisibility(View.GONE);
             return;
@@ -109,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override
