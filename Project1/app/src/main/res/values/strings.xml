@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Project1</string>
+    <string name="name_label">Imię</string>
+    <string name="name_hint">Wpisz imię</string>
+    <string name="last_name_label">Nazwisko</string>
+    <string name="last_name_hint">Wpisz nazwisko</string>
+    <string name="marks_label">Wpisz liczbę ocen (5–15)</string>
+    <string name="maks_hint">Liczba ocen</string>
+    <string name="button_text">Oceny</string>
+    <string name="calculate_mean_button_text">Oblicz średnią</string>
+    <string name="grade_2">2</string>
+    <string name="grade_3">3</string>
+    <string name="grade_4">4</string>
+    <string name="grade_5">5</string>
+    <string name="subject_label_content_description">Subject Name</string>
+    <string name="subject_label">Subject</string>
+    <string-array name="subjects">
+        <item>Przedmiot 1</item>
+        <item>Przedmiot 2</item>
+        <item>Przedmiot 3</item>
+        <item>Przedmiot 4</item>
+        <item>Przedmiot 5</item>
+        <item>Przedmiot 6</item>
+        <item>Przedmiot 7</item>
+        <item>Przedmiot 8</item>
+        <item>Przedmiot 9</item>
+        <item>Przedmiot 10</item>
+        <item>Przedmiot 11</item>
+        <item>Przedmiot 12</item>
+        <item>Przedmiot 13</item>
+        <item>Przedmiot 14</item>
+        <item>Przedmiot 15</item>
+    </string-array>
+</resources>

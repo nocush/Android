@@ -1,5 +1,7 @@
 package com.example.a1;
 
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
+
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,17 +11,26 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private EditText name;
+    private EditText lastname;
+    private EditText ileOcen;
+    private Button button;
+    private TextView meanTextView;
+    private double mean;
 
-    public void openNewActivity(int gradesNumber){
+    public void openNewActivity(int gradesNumber) {
         Intent intent = new Intent(this, SecondActivity.class);
         intent.putExtra("ileOcen", gradesNumber);
         startActivity(intent);
     }
-    public void changeButton(){
+
+    public void changeButton() {
         EditText name = (EditText) findViewById(R.id.editTextTextPersonName);
         EditText lastname = (EditText) findViewById(R.id.editTextTextPersonName2);
         EditText grades = (EditText) findViewById(R.id.editTextNumber);
@@ -51,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        button = findViewById(R.id.button);
+        name = findViewById(R.id.editTextTextPersonName);
+        lastname = findViewById(R.id.editTextTextPersonName2);
+        ileOcen = findViewById(R.id.editTextNumber);
+        meanTextView = findViewById(R.id.meanTextt);
     }
 
 
@@ -126,20 +142,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
     }
+
     @Override
-    protected void onSaveInstanceState(Bundle outState){
-        EditText name = (EditText)findViewById(R.id.editTextTextPersonName);
-        EditText lastname = (EditText)findViewById(R.id.editTextTextPersonName2);
-        EditText grades = (EditText)findViewById(R.id.editTextNumber);
-        if(name.getText().toString().length() == 0){
-        outState.putString("errorname",name.getText().toString());}
-        if(lastname.getText().toString().length() == 0){
-        outState.putString("errorlastname",lastname.getText().toString());}
-        if(grades.getText().toString().length() == 0){
-        outState.putString("errorgrades",grades.getText().toString());}
+    protected void onSaveInstanceState(Bundle outState) {
+        EditText name = (EditText) findViewById(R.id.editTextTextPersonName);
+        EditText lastname = (EditText) findViewById(R.id.editTextTextPersonName2);
+        EditText grades = (EditText) findViewById(R.id.editTextNumber);
+        if (name.getText().toString().length() == 0) {
+            outState.putString("errorname", name.getText().toString());
+        }
+        if (lastname.getText().toString().length() == 0) {
+            outState.putString("errorlastname", lastname.getText().toString());
+        }
+        if (grades.getText().toString().length() == 0) {
+            outState.putString("errorgrades", grades.getText().toString());
+        }
         super.onSaveInstanceState(outState);
 
     }
@@ -147,14 +167,48 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        EditText name = (EditText)findViewById(R.id.editTextTextPersonName);
-        EditText lastname = (EditText)findViewById(R.id.editTextTextPersonName2);
-        EditText grades = (EditText)findViewById(R.id.editTextNumber);
-        if(name.getText().toString().length() == 0){
-        name.setText(savedInstanceState.getString("errorname"));}
-        if(lastname.getText().toString().length() == 0){
-        lastname.setText(savedInstanceState.getString("errorlastname"));}
-        if(grades.getText().toString().length() == 0){
-        grades.setText(savedInstanceState.getString("errorgrades"));}
+        EditText name = (EditText) findViewById(R.id.editTextTextPersonName);
+        EditText lastname = (EditText) findViewById(R.id.editTextTextPersonName2);
+        EditText grades = (EditText) findViewById(R.id.editTextNumber);
+        if (name.getText().toString().length() == 0) {
+            name.setText(savedInstanceState.getString("errorname"));
+        }
+        if (lastname.getText().toString().length() == 0) {
+            lastname.setText(savedInstanceState.getString("errorlastname"));
+        }
+        if (grades.getText().toString().length() == 0) {
+            grades.setText(savedInstanceState.getString("errorgrades"));
+        }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            mean = (double) data.getExtras().get("srednia");
+            double roundOff = Math.round(mean * 100.0) / 100.0;
+            String res = "Twoja średnia to: " + roundOff;
+            meanTextView.setText(res);
+            meanTextView.setVisibility(View.VISIBLE);
+
+            String buttonText;
+            if (mean >= 3.0) {
+                buttonText = "Zaliczony";
+            } else {
+                buttonText = "Niezaliczony";
+            }
+            button.setOnClickListener(view -> {
+                String msg;
+                if (mean >= 3.0) {
+                    msg = "Gratulacje! Zaliczyłeś przedmiot!";
+                } else {
+                    msg = "Wysyłam podanie o zaliczenie warunkowe";
+                }
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                finish();
+            });
+
+        }
+    }
+
 }
